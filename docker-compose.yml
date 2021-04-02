@@ -1,0 +1,42 @@
+version: "3"
+
+services:
+  postgres:
+    hostname: postgres
+    image: postgres:latest
+    restart: always
+    environment:
+      POSTGRES_USER: "sandbox"
+      POSTGRES_PASSWORD: "sandbox"
+      POSTGRES_DB: "sandbox"
+    ports:
+      - "5432:5432"
+    networks:
+      - dev-net
+
+  monolith:
+    hostname: monolith
+    build:
+      context: .
+    depends_on:
+      - postgres
+    environment:
+      APP_ENV: "dev"
+      APP_PORT: 3000
+      JWT_SECRET: "G5Xky3nwsh"
+      DB_HOST: "postgres"
+      DB_PORT: "5432"
+      DB_USER: "sandbox"
+      DB_PASS: "sandbox"
+      DB_NAME: "sandbox"
+      LOG_DIR: "./logs"
+    ports:
+      - "3000:3000"
+
+    networks:
+      - dev-net
+
+# Network
+networks:
+  dev-net:
+    driver: bridge
