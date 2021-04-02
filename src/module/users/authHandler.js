@@ -14,7 +14,7 @@ router.post('/register', async (req, res) => {
       role: req.body.role,
     }
     const data = await authService.registerUser(user)
-    return res.json({
+    return res.status(201).json({
       status: "SUCCESS",
       data,
     })
@@ -50,7 +50,7 @@ router.post('/sign-in', async (req, res) => {
   } catch (error) {
     logger.error({
       service: `${namespace}.post.sign-in`,
-      messaage: error.message,
+      message: error.message,
     })
     return res.status(500).json({ status: "INTERNAL_SERVER_ERROR" })
   }
